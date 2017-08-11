@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="msg = 'I have been clicked'">Click Me</button>
+    <button @click="login" class="click-me">Login</button>
   </div>
 </template>
 
@@ -19,7 +19,11 @@
     }
   },
   methods: {
-    ...mapActions(['fakeAction'])
+    ...mapActions(['fakeAction', 'loginAction']),
+    login(){
+      this.loginAction()
+      this.msg = 'I have been clicked'
+    }
   }
 }
 </script>
