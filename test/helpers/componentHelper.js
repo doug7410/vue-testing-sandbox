@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 Vue.use(Vuex)
+Vue.use(VueRouter)
 
 let div
 
@@ -35,9 +37,10 @@ const storeConfig = {
  * @returns {function()}
  */
 window.componentHelper = function (component) {
-  return () => {
-    // 1. attaches the stubbed store to the component
+    return () => {
+    // 1. attaches the stubbed store and router to the component
     component.store = new Vuex.Store(storeConfig)
+    component.router =  new VueRouter({})
     // 2. mounts the component to the dom element
     // 3. returns the vue instance
     return new Vue(component).$mount(div)
@@ -54,8 +57,10 @@ window.stubAction = (actionName) => {
   const stub = sinon.stub()
   // 2. create the action function that will be placed in the store and add it to the store
   storeConfig.actions[actionName] = function (context, ...args) {
-      // 3. when this action is called it will call the stub
-      stub(...args)
+    // 3. when this action is called it will call the stub
+    // return the stub so you can assert against the stubbed return value
+    // example: stubAction('fakeAction').returns('xyz')
+    return stub(...args)
     }
   // 4. return the stub that was placed in the return of the action for assertions
   return stub

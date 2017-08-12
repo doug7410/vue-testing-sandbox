@@ -1,8 +1,5 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <button @click="login" class="click-me">Login</button>
-    <button @click="foo" class="click-foo">Foo</button>
+  <div>
     <button @click="promise" class="click-promise">Promise</button>
   </div>
 </template>
@@ -11,34 +8,13 @@
   import { mapActions } from 'vuex'
 
   export default {
-  name: 'hello',
-  created () {
-    this.fakeAction('1234')
-  },
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
   methods: {
-    ...mapActions(['fakeAction', 'loginAction', 'fooAction', 'promiseAction']),
-    login(){
-      this.loginAction()
-      this.msg = 'I have been clicked'
-    },
-    foo(){
-      this.msg = this.fooAction()
-    },
-    spiedOn () {
-
-    },
+    ...mapActions(['promiseAction']),
     promise(){
       const vm = this
-      this.spiedOn()
       vm.$router.push('/some/route')
-      return this.promiseAction().then(function (response) {
-        console.log('pushing to route')
-        vm.$router.push('/some/routessss')
+      return vm.promiseAction().then(function (response) {
+        vm.$router.push('/some/other/route')
       })
     }
   }

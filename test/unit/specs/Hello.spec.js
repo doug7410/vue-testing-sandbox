@@ -1,12 +1,12 @@
 import Hello from '@/components/Hello'
 
 describe('Hello.vue', () => {
-  // componentHelper should return a function that
-  // creates a dom element for the component to mount to
-  // attaches the stubbed store to the component
-  // and mounts the component to the dom element
-  // then returns the component
   const mount = componentHelper(Hello)
+
+  beforeEach(() => {
+    stubAction('fooAction')
+    stubAction('fakeAction')
+  })
 
   it('should dispatch the login action when login is clicked', () => {
     const fakeAction = stubAction('fakeAction')
@@ -23,18 +23,16 @@ describe('Hello.vue', () => {
     })
   })
 
-  it('should dispatch the login action when login is clicked', () => {
-    const fakeAction = stubAction('fakeAction')
-    const loginAction = stubAction('loginAction')
+  it('should be able to return a value from a stubbed action', () => {
+    const fooAction = stubAction('fooAction').returns('foo')
     const vm = mount()
 
-    expect($('.hello h1')).to.contain('Welcome to Your Vue.js App')
-    expect(fakeAction).to.have.been.calledOnce.and.calledWith('1234')
+    $('.click-foo').click()
 
-    $('.click-me').click()
+    expect(fooAction).to.have.been.calledOnce
+
     return vm.$nextTick().then(() => {
-      expect($('.hello h1')).to.contain('I have been clicked')
-      expect(loginAction).to.have.been.calledOnce
+      expect($('.hello h1')).to.contain('foo')
     })
   })
 
@@ -142,7 +140,5 @@ describe('Hello.vue', () => {
   //     node.parentNode.removeChild(node)
   //   })
   // })
-
-
 })
 
