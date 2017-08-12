@@ -2,6 +2,11 @@ import Vue from 'vue'
 
 Vue.config.productionTip = false
 
+// import all helpers
+var helpersContext = require.context('../helpers', true)
+helpersContext.keys().forEach(helpersContext)
+
+
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)
 testsContext.keys().forEach(testsContext)
